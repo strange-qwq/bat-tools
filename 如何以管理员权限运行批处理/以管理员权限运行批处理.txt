@@ -1,0 +1,72 @@
+@echo off
+
+cacls.exe "%SystemDrive%\System Volume Information" >nul 2>nul
+
+if %errorlevel%==0 goto Admin
+
+if exist "%temp%\getadmin.vbs" del /f /q "%temp%\getadmin.vbs"
+
+echo Set RequestUAC = CreateObject^("Shell.Application"^)>"%temp%\getadmin.vbs"
+
+echo RequestUAC.ShellExecute "%~s0","","","runas",1 >>"%temp%\getadmin.vbs"
+
+echo WScript.Quit >>"%temp%\getadmin.vbs"
+
+"%temp%\getadmin.vbs" /f
+
+if exist "%temp%\getadmin.vbs" del /f /q "%temp%\getadmin.vbs"
+
+exit
+
+
+
+:Admin
+
+
+
+
+:Admin后换行跟自己的批处理；
+
+根据实际情况修改“RequestUAC”“%temp%\getadmin.vbs”这两个字段吧。
+
+
+我做了补充，
+一是对于生成的vbs要做清理嘛；
+
+
+二是要让Wscript执行WScript.Quit来结束进程，不然进程里会一直有脚本解释器在运行；
+
+
+另外，是关于操作系统的版本这个问题：
+
+（当然可能是自作多情）
+我考虑了在低于Vista/2008的情况下，关于UAC的问题。
+
+我有毒...
+
+UAC并不存在于XP里，嗯。
+
+
+当然我也考虑了把批处理放在低于Vista/2008操作系统里运行的情况：
+
+若是在管理员账户（包括超级管理员）下运行，那就不需要前面这个判断UAC的了；
+
+若是在受限账户下运行，要拿权限，我猜就需要Hack点的手段了吧，不是很懂。
+
+
+所以如果需要判断操作系统的，那就把这段放最前面:
+
+@echo off
+
+ver|findstr "[6,10]\.[0-9]\.[0-9][0-9]*" > nul && (goto Main)
+
+ver|findstr "[3-5]\.[0-9]\.[0-9][0-9]*" > nul && (goto isBelowNT6)
+
+
+
+:isBelowNT6
+
+
+
+:Main
+

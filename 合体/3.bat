@@ -1,0 +1,1 @@
+copy /b 1.jpg+2.zip 3.zip

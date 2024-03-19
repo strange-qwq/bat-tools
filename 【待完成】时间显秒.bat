@@ -1,0 +1,5 @@
+计算机\HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced
+新建DWORD32值
+名字：ShowSecondsInSystemClock
+值：1
+重启资源管理器
